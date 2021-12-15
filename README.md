@@ -1,6 +1,7 @@
 ## Serverless Go Demo
 
 ![build](https://github.com/aws-samples/serverless-go-demo/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/aws-samples/serverless-go-demo/branch/main/graph/badge.svg?token=TxHdfJjSxP)](https://codecov.io/gh/aws-samples/serverless-go-demo)
 
 <p align="center">
   <img src="imgs/diagram.png" alt="Architecture diagram"/>
