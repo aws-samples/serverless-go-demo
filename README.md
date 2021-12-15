@@ -58,6 +58,8 @@ filter @type="REPORT"
 | stats count(*) as count, pct(duration, 50) as p50, pct(duration, 90) as p90, pct(duration, 99) as p99, max(duration) as max by coldStart
 ```
 
+![Load Test Results](imgs/load-test.jpeg)
+
 ## 👀 With other languages
 
 You can find implementations of this project in other languages here:
