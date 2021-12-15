@@ -9,6 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.4.4
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchevents v1.9.2
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.10.0
+	github.com/golang/mock v1.6.0
 )
 
 require (

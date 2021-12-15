@@ -5,10 +5,13 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/aws-samples/serverless-go-demo/store"
 	"github.com/aws-samples/serverless-go-demo/types"
+	"github.com/aws-samples/serverless-go-demo/types/mocks"
+	"github.com/golang/mock/gomock"
 )
 
 func TestGetProductNotFound(t *testing.T) {
@@ -53,5 +56,31 @@ func TestGetExistingProduct(t *testing.T) {
 
 	if product.Price != 0.123 {
 		t.Errorf("GetProduct returned wrong price")
+	}
+}
+
+func TestGetFailedStore(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	ctx := context.Background()
+
+	store := mocks.NewMockStore(ctrl)
+	store.EXPECT().
+		Get(ctx, gomock.Eq("1")).
+		Return(nil, errors.New("internal error"))
+
+	domain := NewProductsDomain(store)
+
+	product, err := domain.GetProduct(context.Background(), "1")
+	if product != nil {
+		t.Error("Got unexpected product")
+	}
+
+	if err == nil {
+		t.Error("Expecting an error to be returned")
+		return
+	}
+
+	if err.Error() != "internal error" {
+		t.Errorf("Got unexpected error: %s", err)
 	}
 }

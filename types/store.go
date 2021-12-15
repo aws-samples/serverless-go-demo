@@ -1,5 +1,7 @@
 package types
 
+//go:generate mockgen -destination=./mocks/mock_store.go -package=mocks github.com/aws-samples/serverless-go-demo/types Store
+
 import (
 	"context"
 )
