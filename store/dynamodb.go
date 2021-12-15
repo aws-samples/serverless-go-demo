@@ -14,14 +14,14 @@ import (
 	"github.com/aws-samples/serverless-go-demo/types"
 )
 
-type DyanmoDBStore struct {
+type DynamoDBStore struct {
 	client    *dynamodb.Client
 	tableName string
 }
 
-var _ types.Store = (*DyanmoDBStore)(nil)
+var _ types.Store = (*DynamoDBStore)(nil)
 
-func NewDynamoDBStore(ctx context.Context, tableName string) *DyanmoDBStore {
+func NewDynamoDBStore(ctx context.Context, tableName string) *DynamoDBStore {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		log.Fatalf("unable to load SDK config, %v", err)
@@ -29,13 +29,13 @@ func NewDynamoDBStore(ctx context.Context, tableName string) *DyanmoDBStore {
 
 	client := dynamodb.NewFromConfig(cfg)
 
-	return &DyanmoDBStore{
+	return &DynamoDBStore{
 		client:    client,
 		tableName: tableName,
 	}
 }
 
-func (d *DyanmoDBStore) All(ctx context.Context, next *string) (types.ProductRange, error) {
+func (d *DynamoDBStore) All(ctx context.Context, next *string) (types.ProductRange, error) {
 	productRange := types.ProductRange{
 		Products: []types.Product{},
 	}
@@ -72,7 +72,7 @@ func (d *DyanmoDBStore) All(ctx context.Context, next *string) (types.ProductRan
 	return productRange, nil
 }
 
-func (d *DyanmoDBStore) Get(ctx context.Context, id string) (*types.Product, error) {
+func (d *DynamoDBStore) Get(ctx context.Context, id string) (*types.Product, error) {
 	response, err := d.client.GetItem(ctx, &dynamodb.GetItemInput{
 		TableName: &d.tableName,
 		Key: map[string]ddbtypes.AttributeValue{
@@ -98,7 +98,7 @@ func (d *DyanmoDBStore) Get(ctx context.Context, id string) (*types.Product, err
 	return &product, nil
 }
 
-func (d *DyanmoDBStore) Put(ctx context.Context, product types.Product) error {
+func (d *DynamoDBStore) Put(ctx context.Context, product types.Product) error {
 	item, err := attributevalue.MarshalMap(&product)
 	if err != nil {
 		return fmt.Errorf("unable to marshal product: %w", err)
@@ -116,7 +116,7 @@ func (d *DyanmoDBStore) Put(ctx context.Context, product types.Product) error {
 	return nil
 }
 
-func (d *DyanmoDBStore) Delete(ctx context.Context, id string) error {
+func (d *DynamoDBStore) Delete(ctx context.Context, id string) error {
 	_, err := d.client.DeleteItem(ctx, &dynamodb.DeleteItemInput{
 		TableName: &d.tableName,
 		Key: map[string]ddbtypes.AttributeValue{
