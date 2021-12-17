@@ -59,7 +59,7 @@ func TestGetExistingProduct(t *testing.T) {
 	}
 }
 
-func TestGetFailedStore(t *testing.T) {
+func TestGetInternalStoreError(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	ctx := context.Background()
 
@@ -70,11 +70,59 @@ func TestGetFailedStore(t *testing.T) {
 
 	domain := NewProductsDomain(store)
 
-	product, err := domain.GetProduct(context.Background(), "1")
+	product, err := domain.GetProduct(ctx, "1")
 	if product != nil {
 		t.Error("Got unexpected product")
 	}
 
+	if err == nil {
+		t.Error("Expecting an error to be returned")
+		return
+	}
+
+	if err.Error() != "internal error" {
+		t.Errorf("Got unexpected error: %s", err)
+	}
+}
+
+func TestAllProductsWithInvalidNext(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	ctx := context.Background()
+
+	store := mocks.NewMockStore(ctrl)
+	store.EXPECT().
+		All(ctx, gomock.Nil()).
+		AnyTimes()
+
+	domain := NewProductsDomain(store)
+
+	t.Run("with nil 'next'", func(t *testing.T) {
+		domain.AllProducts(ctx, nil)
+	})
+
+	t.Run("with empty 'next'", func(t *testing.T) {
+		next := ""
+		domain.AllProducts(ctx, &next)
+	})
+
+	t.Run("with empty spaces 'next'", func(t *testing.T) {
+		next := "  "
+		domain.AllProducts(ctx, &next)
+	})
+}
+
+func TestAllProductsInternalStoreError(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	ctx := context.Background()
+
+	store := mocks.NewMockStore(ctrl)
+	store.EXPECT().
+		All(ctx, gomock.All()).
+		Return(types.ProductRange{}, errors.New("internal error"))
+
+	domain := NewProductsDomain(store)
+
+	_, err := domain.AllProducts(ctx, nil)
 	if err == nil {
 		t.Error("Expecting an error to be returned")
 		return
