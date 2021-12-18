@@ -21,7 +21,8 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: actions/cache@v2
+      - name: Cache go modules
+        uses: actions/cache@v2
         with:
           path: |
             ~/.cache/go-build
