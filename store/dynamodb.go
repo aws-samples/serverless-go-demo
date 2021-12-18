@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	ddbtypes "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/aws/aws-xray-sdk-go/instrumentation/awsv2"
 
 	"github.com/aws-samples/serverless-go-demo/types"
 )
@@ -27,6 +28,7 @@ func NewDynamoDBStore(ctx context.Context, tableName string) *DynamoDBStore {
 		log.Fatalf("unable to load SDK config, %v", err)
 	}
 
+	awsv2.AWSV2Instrumentor(&cfg.APIOptions)
 	client := dynamodb.NewFromConfig(cfg)
 
 	return &DynamoDBStore{
