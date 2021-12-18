@@ -96,6 +96,8 @@ func TestAllProductsWithInvalidNext(t *testing.T) {
 
 	domain := NewProductsDomain(store)
 
+	t.Parallel()
+
 	t.Run("with nil 'next'", func(t *testing.T) {
 		domain.AllProducts(ctx, nil)
 	})
@@ -131,4 +133,38 @@ func TestAllProductsInternalStoreError(t *testing.T) {
 	if err.Error() != "internal error" {
 		t.Errorf("Got unexpected error: %s", err)
 	}
+}
+
+func TestAllProducts(t *testing.T) {
+	memoryStore := store.NewMemoryStore()
+	domain := NewProductsDomain(memoryStore)
+	ctx := context.Background()
+
+	t.Run("with an empty store", func(t *testing.T) {
+		productRange, err := domain.AllProducts(ctx, nil)
+		if err != nil {
+			t.Errorf("Got unexpected error: %w", err)
+		}
+
+		if len(productRange.Products) != 0 {
+			t.Errorf("Got unexpected products")
+		}
+	})
+
+	t.Run("with products on the store", func(t *testing.T) {
+		memoryStore.Put(ctx, types.Product{
+			Id:    "iXR",
+			Name:  "iPhone XML",
+			Price: 0.123,
+		})
+
+		productRange, err := domain.AllProducts(ctx, nil)
+		if err != nil {
+			t.Errorf("Got unexpected error: %w", err)
+		}
+
+		if len(productRange.Products) != 1 {
+			t.Errorf("Got unexpected products")
+		}
+	})
 }
