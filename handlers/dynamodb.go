@@ -21,7 +21,7 @@ type StreamsEventResponse struct {
 }
 
 type BatchItemFailure struct {
-	ItemIdentifier string `json:"itemIdentifier`
+	ItemIdentifier string `json:"itemIdentifier"`
 }
 
 func NewDynamoDBEventHandler(p *domain.ProductsStream) *DynamoDBEventHandler {

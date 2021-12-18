@@ -85,7 +85,7 @@ func (e *EventBridgeBus) Put(ctx context.Context, events []types.Event) ([]types
 func batchEvents(events []types.Event, maxBatchSize uint, batchFn func([]types.Event) ([]types.FailedEvent, error)) ([]types.FailedEvent, error) {
 	skip := 0
 	recordsAmount := len(events)
-	batchAmount := int(math.Ceil(float64(recordsAmount / int(maxBatchSize))))
+	batchAmount := int(math.Ceil(float64(recordsAmount) / float64(maxBatchSize)))
 
 	batchFailedEvents := []types.FailedEvent{}
 

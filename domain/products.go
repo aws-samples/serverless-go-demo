@@ -11,8 +11,8 @@ import (
 )
 
 var (
-  ErrJsonUnmarshal = errors.New("failed to parse product from request body")
-  ErrProductIdMismatch = errors.New("product ID in path does not match product ID in body")
+	ErrJsonUnmarshal     = errors.New("failed to parse product from request body")
+	ErrProductIdMismatch = errors.New("product ID in path does not match product ID in body")
 )
 
 type Products struct {
