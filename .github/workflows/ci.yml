@@ -21,6 +21,10 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
+      - name: Run linter
+        if: matrix.go == '1.17'
+        run: make lint
+
       - name: Run tests
         run: go test -tags=unit -race -coverprofile=coverage.txt -covermode=atomic ./...
 
