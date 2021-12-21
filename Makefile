@@ -3,7 +3,7 @@ FUNCTIONS := get-products get-product put-product delete-product products-stream
 REGION := eu-central-1
 
 # To try different version of Go
-GO := go
+GO ?= go
 
 # Make sure to install aarch64 GCC compilers if you want to compile with GCC.
 CC := aarch64-linux-gnu-gcc

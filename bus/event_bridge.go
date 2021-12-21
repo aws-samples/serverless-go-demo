@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchevents"
 	cloudwatchtypes "github.com/aws/aws-sdk-go-v2/service/cloudwatchevents/types"
+	"github.com/aws/aws-xray-sdk-go/instrumentation/awsv2"
 )
 
 type EventBridgeBus struct {
@@ -26,6 +27,7 @@ func NewEventBridgeBus(ctx context.Context, busName string) *EventBridgeBus {
 		log.Fatalf("unable to load SDK config, %v", err)
 	}
 
+	awsv2.AWSV2Instrumentor(&cfg.APIOptions)
 	client := cloudwatchevents.NewFromConfig(cfg)
 
 	return &EventBridgeBus{

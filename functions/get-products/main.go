@@ -9,6 +9,7 @@ import (
 	"github.com/aws-samples/serverless-go-demo/store"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-xray-sdk-go/xray"
 )
 
 func main() {
@@ -16,6 +17,8 @@ func main() {
 	if !ok {
 		panic("Need TABLE environment variable")
 	}
+
+	xray.Configure(xray.Config{})
 
 	dynamodb := store.NewDynamoDBStore(context.TODO(), tableName)
 	domain := domain.NewProductsDomain(dynamodb)
