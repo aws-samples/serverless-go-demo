@@ -64,8 +64,10 @@ filter @type="REPORT"
 
 You can find implementations of this project in other languages here:
 
-* [🦀 Rust](https://github.com/aws-samples/serverless-rust-demo)
+* [⭐ Groovy](https://github.com/aws-samples/serverless-groovy-demo)
 * [☕ Java with GraalVM](https://github.com/aws-samples/serverless-graalvm-demo)
+* [🤖 Kotlin](https://github.com/aws-samples/serverless-kotlin-demo)
+* [🦀 Rust](https://github.com/aws-samples/serverless-rust-demo)
 * [🏗️ TypeScript](https://github.com/aws-samples/serverless-typescript-demo)
 
 ## Security
