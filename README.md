@@ -52,6 +52,8 @@ Using this CloudWatch Logs Insights query you can analyse the latency of the req
 
 The query separates cold starts from other requests and then gives you p50, p90 and p99 percentiles.
 
+The times bellow were obtained while running the sample code with 128MB of RAM and arm64 architecture.
+
 ```
 filter @type="REPORT"
 | fields greatest(@initDuration, 0) + @duration as duration, ispresent(@initDuration) as coldStart
